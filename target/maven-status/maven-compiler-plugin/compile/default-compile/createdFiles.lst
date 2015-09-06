@@ -1,0 +1,10 @@
+multitenant/controller/MainController.class
+multitenant/models/Project.class
+multitenant/models/Card.class
+multitenant/MultitenantApplication.class
+multitenant/config/DatabaseConfig.class
+multitenant/models/Task.class
+multitenant/models/Tenant.class
+multitenant/models/User.class
+multitenant/dao/UserDao.class
+multitenant/models/Story.class

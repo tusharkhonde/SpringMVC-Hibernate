@@ -1,0 +1,161 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta http-equiv="Content-Type" content="application/json;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Multi-Tenant SaaS</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" href="../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-theme.css}" href="../css/bootstrap-theme.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.css}" href="../css/bootstrap-select.css" >
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Multi-Tenant SaaS</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" th:action="@{/login}" id="form_login" method="get">
+            <div class="form-group">
+              <input type="text" placeholder="Username" id="user" name="user" class="form-control" >
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" id="pass" name="pass" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success" id="btn_login" onclick="return validate_login()">Login</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+      <!-- Jumbotron -->
+    <div class="jumbotron">
+        <div class="container">
+         <h1>Sign Up Now!</h1>
+         <p class="lead"> Manage your projects using Kanban, Scrum or Waterfall model. </p>
+           <li class="dropdown">
+                 <a class="dropdown-toggle" data-toggle="dropdown">Sign Up <b class="caret"></b></a>
+                     <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+                        <li>
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <form class="form" role="form" method="post" th:action="@{/signup}" id="signup-nav">
+
+                                     <div class="form-group">
+                                       <label class="sr-only" >Firstname</label>
+                                       <input type="text" class="form-control" id="firstname" name="firstname" placeholder=" Enter First name" required>
+                                    </div>
+                                     <div class="form-group">
+                                       <label class="sr-only" >Lastname</label>
+                                       <input type="text" class="form-control" id="lastname" name="lastname" placeholder=" Enter Last name" required>
+                                    </div>
+                                     <div class="form-group">
+                                         <label class="sr-only">Email-Id</label>
+                                         <input type="email" class="form-control" id="email" name="email" placeholder=" Enter Email" required>
+                                     </div>
+                                    <div class="form-group">
+                                       <label class="sr-only">Password</label>
+                                       <input type="password" class="form-control" id="password" name="password" placeholder=" Enter Password" required>
+                                    </div>
+                                     <div class="form-group">
+                                        <label class="dropdown-menu " for="tenanttype">Tenant Type</label>
+                                           <div class="dropdown" align="left">
+                                              <select class="form-inline input-sm" name="tenanttype" id="tenanttype" style="width: 220px" >
+                                                 <option value="" selected disabled>Tenant Type</option>
+                                                  <option id="opt_1" value="kanban">Kanban</option>
+                                                  <option id="opt_2" value="scrum">Scrum</option>
+                                                  <option id="opt_3" value="waterfall">Waterfall</option>
+                                              </select>
+                                           </div> <br>
+                                      </div>
+                                    <div class="form-group">
+                                       <button type="submit" class="btn btn-success btn-block">Sign Up</button>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </li>
+                     </ul>
+            </li>
+        </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2015 Company.com<p>
+      </div>
+    </footer>
+
+    </div> <!-- /container -->
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js"></script>
+
+    <script>
+
+        $(document).ready(function() {
+            //Handles menu drop down
+            $("a.dropdown-toggle").click(function (ev) {
+                $("a.dropdown-toggle").dropdown("toggle");
+                return false;
+//            $('.dropdown-menu').find('form').click(function (e) {
+//                 e.stopPropagation();
+//             });
+            });
+        }
+
+//        function add_Text() {
+//                var x = $("#selectProject option:selected").val();
+//                $('input[name="tenanttype"]').val(x);
+//
+//        }
+
+        function validate_login(event){
+                var name = $("#user").val();
+                var pass = $("#pass").val();
+                if (validation(name, pass) == 1 ) // Calling validation function.
+                {
+                    $('#form_login').submit
+                }
+
+                else {
+                    $("#form_login").get(0).reset();
+                }
+                event.preventDefault();
+            }
+
+            function validation(name, pass) {
+
+                if (name == '' || pass == '') {
+                    alert("Please fill all fields...!!!!!!");
+                    var x = 0;
+                    return x;
+                }
+                else {
+                    var x = 1;
+                    return x;
+                }
+            }
+
+
+    </script>
+
+
+</body>
+</html>

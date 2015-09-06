@@ -1,0 +1,143 @@
+<!DOCTYPE html "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title th:text="${project}">Title</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/bootstrap.css}" href="../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/bootstrap-select.css}" href="../css/bootstrap-select.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-inverse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav nav-pills">
+                    <li role="presentation"><a th:href="|/${userid}|">Dashboard</a></li>
+                    <li role="presentation"><a th:href="|/${userid}/status|">Project Status</a></li>
+                    <li role="presentation"><a th:href="@{/}">Logout</a></li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <div class="jumbotron">
+        <h1 class="text-center" th:text="${project}">Project Name </h1>
+        <div th:switch="${type}">
+            <h2 th:case="story" class="text-center"> Enter Story Details </h2>
+            <h2 th:case="cards" class="text-center"> Enter Card Details </h2>
+            <h2 th:case="tasks" class="text-center"> Enter Task Details </h2>
+        </div>
+    </div>
+
+    <div th:switch="${type}">
+        <div th:case="cards">
+            <form class="form-group" id="form-cards" th:action="|/${userid}/add/cards|" method="post">
+            <!--<label class="control-label col-lg-5">Card ID</label>-->
+                <!--<input type="text" name="cardId" class="text-center form-inline col-lg-push-8"> <br> <br>-->
+
+            <label class="control-label col-lg-5">Card Name</label>
+                <input type="text" name="cardName" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Card Description</label>
+                <input type="text" name="cardDescription" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Card Assigned To</label>
+                <input type="text" name="assignedTo" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Card Type</label>
+               <div class="dropdown" align="left">
+                <select class="form-inline input-sm" name="cardType" id="cardType">
+                  <option value="" selected disabled>Card Type</option>
+                    <option id="opt_1" value="To Do">To Do</option>
+                    <option id="opt_2" value="In Progress">In Progress</option>
+                    <option id="opt_3" value="In Review">In Review</option>
+                    <option id="opt_4" value="Done">Done</option>
+                </select>
+               </div> <br>
+
+            <p><div align="center"><button type="submit" class="btn btn-primary" id="btn_cards">Add Card</button></div></p>
+            </form>
+        </div>
+
+        <div th:case="story">
+            <form class="form-group" id="form-story" th:action="|/${userid}/add/story|" method="post">
+                <!--<label class="control-label col-lg-5">Story ID</label>-->
+                <!--<input type="text" name="storyId" class="text-center form-inline col-lg-push-8"> <br> <br>-->
+
+                <label class="control-label col-lg-5">Story Title</label>
+                <input type="text" name="storyTitle" class="text-center form-inline col-lg-push-8" > <br> <br>
+
+                <label class="control-label col-lg-5">Story Description</label>
+                <input type="text" name="storyDescription" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+                <label class="control-label col-lg-5">Total Hours</label>
+                <input type="text" name="totalHours" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+                <label class="control-label col-lg-5">Remaining Hours</label>
+                <input type="text" name="remainingHours" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+                <label class="control-label col-lg-5">Story Owner</label>
+                <input type="text" name="assignedTo" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+                <p><div align="center"><button type="submit" class="btn btn-primary" id="btn_story">Add Story</button></div></p>
+            </form>
+        </div>
+
+        <div th:case="tasks">
+            <form class="form-group" id="form-tasks" th:action="|/${userid}/add/tasks|" method="post">
+
+            <label class="control-label col-lg-5">Task Name</label>
+                <input type="text" name="taskName" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Task Description</label>
+                <input type="text" name="taskDescription" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Start Date</label>
+                <input type="date" name="startdate" class="date text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Finish Date</label>
+                <input type="date" name="finishdate" class="date text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Task Assigned To</label>
+                <input type="text" name="assignedTo" class="text-center form-inline col-lg-push-8"> <br> <br>
+
+            <label class="control-label col-lg-5">Task Type</label>
+               <div class="dropdown" align="left">
+                <select class="form-inline input-sm" name="tasktype" id="tasktype">
+                  <option value="" selected disabled>Task Type</option>
+                    <option id="opt_5" value="Requested">Requested</option>
+                    <option id="opt_6" value="In Progress">In Progress</option>
+                    <option id="opt_7" value="Completed">Completed</option>
+                </select>
+               </div> <br>
+
+            <p><div align="center"><button type="submit" class="btn btn-primary" id="btn_tasks">Add Task</button></div></p>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+</html>

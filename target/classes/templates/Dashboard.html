@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title th:text="${tenant}"></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}" href="../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.css}" href="../css/bootstrap-select.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-select.min.css}" href="../css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-inverse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"> <a th:href="|/${userid}|">Dashboard</a> </li>
+                    <li role="presentation"> <a th:href="|/${userid}/status|">Project Status</a> </li>
+                    <li role="presentation"> <a th:href="@{/}">Logout</a> </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+</nav>
+
+        <!-- Table -->
+   <div th:switch="${tenant}">
+     <div th:case="scrum">
+       <div class="jumbotron">
+         <h1 class="text-center">Scrum </h1>
+         <p align="center"><a class="btn btn-primary" role="button" th:href="|/${userid}/add/story|" id="btn_add_story">Add Story</a></p>
+       </div>
+       <table class="table table-bordered table-hover table-condensed">
+         <thead>
+            <tr>
+                <th>Story Title</th>
+                <th>Story Description</th>
+                <th>Total Hours</th>
+                <th>Remaining Hours</th>
+                <th>Assigned To</th>
+                <th>Edit / Delete Story</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr th:each="story :${story}">
+              <td th:text="${story.storyTitle}">Name</td>
+              <td th:text="${story.storyDescription}">Description</td>
+              <td th:text="${story.totalHours}">Total Hours</td>
+              <td th:text="${story.remainingHours}">Remaining Hours</td>
+              <td th:text="${story.assignedTo}">AssignedTo</td>
+              <td><p><a class="btn btn-primary" role="button" th:href="|/${userid}/edit/story/${story.storyId}|" id="btn_edit_story" >Edit/Delete</a>
+              </p></td>
+            </tr>
+         </tbody>
+       </table>
+     </div>
+
+     <div th:case="kanban">
+       <div class="jumbotron">
+             <h1 class="text-center">Kanban</h1>
+             <p align="center"><a class="btn btn-primary" role="button" th:href="|/${userid}/add/cards|" id="btn_add_cards">Add Cards</a></p>
+       </div>
+         <div id="div_1" class="container" style="width: 25%;float: left;display: inline">
+             <div class="page-header text-center">To Do</div>
+             <div th:each="card : ${cards}">
+                <div th:if="${card.cardType == 'To Do'}">
+                    <div class="panel panel-default">
+                        <div class="panel-body"><a th:href="|/${userid}/edit/cards/${card.cardId}|" th:text="${card.cardName}">Card Name</a></div>
+                        <div class="panel-footer" th:text="${card.assignedTo}">Assigned To</div>
+                    </div>
+                </div>
+             </div>
+         </div>
+         <div id="div_2" class="container" style="width: 25%;float: left;display: inline">
+             <div class="page-header text-center">In Progress</div>
+             <div th:each="card : ${cards}">
+                 <div th:if="${card.cardType == 'In Progress'}">
+                     <div class="panel panel-default">
+                         <div class="panel-body"><a th:href="|/${userid}/edit/cards/${card.cardId}|" th:text="${card.cardName}">Card Name</a></div>
+                         <div class="panel-footer" th:text="${card.assignedTo}">Assigned To</div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div id="div_3" class="container" style="width: 25%;float: left;display: inline">
+             <div class="page-header text-center">In Review</div>
+             <div th:each="card : ${cards}">
+                 <div th:if="${card.cardType == 'In Review'}">
+                     <div class="panel panel-default">
+                         <div class="panel-body"><a th:href="|/${userid}/edit/cards/${card.cardId}|" th:text="${card.cardName}">Card Name</a></div>
+                         <div class="panel-footer" th:text="${card.assignedTo}">Assigned To</div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <div id="div_4" class="container" style="width: 25%;float: left;display: inline">
+             <div class="page-header text-center">Done</div>
+             <div th:each="card : ${cards}">
+                 <div th:if="${card.cardType == 'Done'}">
+                     <div class="panel panel-default">
+                         <div class="panel-body"><a th:href="|/${userid}/edit/cards/${card.cardId}|" th:text="${card.cardName}">Card Name</a></div>
+                         <div class="panel-footer" th:text="${card.assignedTo}">Assigned To</div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+
+
+     <div th:case="waterfall">
+        <div class="jumbotron">
+            <h1 class="text-center">Waterfall </h1>
+            <p align="center"><a class="btn btn-primary" role="button" th:href="|/${userid}/add/tasks|" id="btn_add_tasks">Add Tasks</a></p>
+        </div>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+                <th>Task Name</th>
+                <th>Task Description</th>
+                <th>Start Date</th>
+                <th>Finish Date</th>
+                <th>Task Type</th>
+                <th>Assigned To</th>
+                <th>Edit / Delete Story</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="task : ${tasks}">
+                <td th:text="${task.taskName}">TaskName</td>
+                <td th:text="${task.taskDescription}">TaskDescription</td>
+                <td th:text="${task.startdate}">StartDate</td>
+                <td th:text="${task.finishdate}">FinishDate</td>
+                <td th:text="${task.tasktype}">TaskType</td>
+                <td th:text="${task.assignedTo}">AssignedTo</td>
+                <td><p><a class="btn btn-primary" role="button" th:href="|/${userid}/edit/tasks/${task.taskId}|" id="btn_edit_tasks" >Edit/Delete</a>
+                </p></td>
+              </tr>
+            </tbody>
+        </table>
+     </div>
+   </div>
+
+
+</body>
+</html>
